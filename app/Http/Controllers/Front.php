@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Notifications\SendMail;
+use Illuminate\Support\Facades\Auth;
 use App\Book;
 use App\Category;
 use App\Product;
@@ -21,7 +23,8 @@ class Front extends Controller
 
     public function products()
     {
-        return view('products', array('page' => 'products'));
+        $books = Book::all();
+        return view('products', array('page' => 'products', 'books'=> $books));
     }
 
     public function product_details($id)
@@ -39,7 +42,8 @@ class Front extends Controller
 
     public function product_brands($name, $category = null)
     {
-        return view('products', array('page' => 'products'));
+        $books = Book::all();
+        return view('products', array('page' => 'products', 'books'=> $books));
     }
 
     public function blog()
@@ -98,7 +102,13 @@ class Front extends Controller
 
     public function checkout()
     {
-        return view('checkout', array('page' => 'home'));
+        $cart = Cart::content();
+        return view('checkout', array('page' => 'home', 'cart'=> $cart));
+    }
+
+    public function postCheckout(Request $request){
+        $user = Auth::user();
+        $user->notify(new SendMail());
     }
 
     public function search($query)

@@ -18,7 +18,7 @@
 
             <div class="col-sm-9 padding-right">
                 <div class="features_items"><!--features_items-->
-                    <h2 class="title text-center">{{ $category->name }}</h2>
+                    <h2 class="title text-center">{{ isset($category->name)?$category->name:"Nhà Sách E Shopper" }}</h2>
                     @foreach($books as $book)
                     <div class="col-sm-4">
                         <div class="product-image-wrapper">
