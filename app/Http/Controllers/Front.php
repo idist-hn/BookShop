@@ -6,62 +6,89 @@ use App\Book;
 use App\Category;
 use App\Product;
 use Gloudemans\Shoppingcart\Facades\Cart;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Request;
+class Front extends Controller
+{
 
-class Front extends Controller {
-
-    public function index() {
+    public function index()
+    {
         $features = Book::getFeature(5);
         $data["features"] = $features;
         $categories_feature = Category::getFeature();
         $data['categories_feature'] = $categories_feature;
-        return view('home', array('page' => 'home', "data"=> $data));
+        return view('home', array('page' => 'home', "data" => $data));
     }
 
-    public function products() {
+    public function products()
+    {
         return view('products', array('page' => 'products'));
     }
 
-    public function product_details($id) {
+    public function product_details($id)
+    {
         $book = Book::find($id);
-        return view('product_details', array('page' => 'products', "book"=> $book));
+        return view('product_details', array('page' => 'products', "book" => $book));
     }
 
-    public function product_categories($name) {
+    public function product_categories($name)
+    {
         $category = Category::getBook($name);
         $books = $category->books;
-        return view('products', array('page' => 'products', "category"=> $category,'books'=> $books));
+        return view('products', array('page' => 'products', "category" => $category, 'books' => $books));
     }
 
-    public function product_brands($name, $category = null) {
+    public function product_brands($name, $category = null)
+    {
         return view('products', array('page' => 'products'));
     }
 
-    public function blog() {
+    public function blog()
+    {
         return view('blog', array('page' => 'blog'));
     }
 
-    public function blog_post($id) {
+    public function blog_post($id)
+    {
         return view('blog_post', array('page' => 'blog'));
     }
 
-    public function contact_us() {
+    public function contact_us()
+    {
         return view('contact_us', array('page' => 'contact_us'));
     }
 
-    public function login() {
+    public function login()
+    {
         return view('login', array('page' => 'home'));
     }
 
-    public function logout() {
+    public function logout()
+    {
         return view('login', array('page' => 'home'));
     }
 
-    public function cart(Request $request) {
-        if ($request->isMethod('post')) {
-            $book_id = $request['book_id'];
-            $book = Book::find($book_id);
-            Cart::add(array('id' => $book_id, 'name' => $book->name, 'qty' => $request['quantity'], 'price' => $book->price));
+    public function cart() {
+//        Cart::destroy();
+
+        //update/ add new item to cart
+        if (Request::isMethod('post')) {
+            $book_id = Request::get('book_id');
+            $book = Product::find($book_id);
+            Cart::add(array('id' => $book_id, 'name' => $book->name, 'qty' => 1, 'price' => $book->price, 'thumbnail'=> $book->thumbnail));
+        }
+
+        //increment the quantity
+        if (Request::get('book_id') && (Request::get('increment')) == 1) {
+            $rowId = Cart::search(function($key, $value) { return $key->id == Request::get('book_id'); })->first();
+            $item = Cart::get($rowId->rowId);
+            Cart::update($rowId->rowId, $rowId->qty + 1);
+        }
+
+        //decrease the quantity
+        if (Request::get('book_id') && (Request::get('decrease')) == 1) {
+            $rowId = Cart::search(function($key, $value) { return $key->id == Request::get('book_id'); })->first();
+            $item = Cart::get($rowId->rowId);
+            Cart::update($rowId->rowId, $rowId->qty - 1);
         }
 
         $cart = Cart::content();
@@ -69,12 +96,13 @@ class Front extends Controller {
         return view('cart', array('cart' => $cart, 'title' => 'Welcome', 'description' => '', 'page' => 'home'));
     }
 
-
-    public function checkout() {
+    public function checkout()
+    {
         return view('checkout', array('page' => 'home'));
     }
 
-    public function search($query) {
+    public function search($query)
+    {
         return view('products', array('page' => 'products'));
     }
 

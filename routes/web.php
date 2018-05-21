@@ -23,6 +23,7 @@ Route::get('/login','Front@login');
 Route::get('/logout','Front@logout');
 Route::get('/cart','Front@cart');
 Route::post('/cart','Front@cart')->name("front.cart.post");
+//Route::get("/cart/add/{id}","Front@addItem")->name("cart.add");
 Route::get('/checkout','Front@checkout');
 Route::get('/search/{query}','Front@search');
 
@@ -30,5 +31,7 @@ Route::get('blade', function () {
     $drinks = array('Vodka','Gin','Brandy');
     return view('page',array('name' => 'The Raven','day' => 'Friday','drinks' => $drinks));
 });
+
+
 
 

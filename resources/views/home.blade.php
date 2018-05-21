@@ -76,8 +76,13 @@
                                                         <img src="{{ $book->thumbnail }}" alt=""/>
                                                         <h2>{{ $book->price }}</h2>
                                                         <p>{{ $book->name }}</p>
-                                                        <a href="#" class="btn btn-default add-to-cart"><i
-                                                                    class="fa fa-shopping-cart"></i>Thêm vào giỏ</a>
+                                                        <form method="post" action="{{ route("front.cart.post") }}" >
+                                                            {{ csrf_field() }}
+                                                            <input type="hidden" value="{{ $book->id }}" id="book_id" name="book_id"/>
+                                                            <button type="submit" class="btn btn-default add-to-cart"><i
+                                                                        class="fa fa-shopping-cart"></i>Thêm vào giỏ</button>
+                                                        </form>
+
                                                     </div>
                                                 </div>
                                             </div>

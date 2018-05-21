@@ -1,69 +1,76 @@
 @extends('layouts.layout')
 
-@section('content')
-    <section id="advertisement">
-        <div class="container">
-            <img src="{{asset('images/shop/advertisement.jpg')}}" alt="" />
-        </div>
-    </section>
-
-    <section>
-        <div class="container">
-            <div class="row">
-                <div class="col-sm-3">
-                    <div class="left-sidebar">
-                        @include('shared.sidebar')
-                    </div>
+@section('content')       
+     <section id="cart_items">
+            <div class="container">
+                <div class="breadcrumbs">
+                    <ol class="breadcrumb">
+                        <li><a href="#">Home</a></li>
+                        <li class="active">Shopping Cart</li>
+                    </ol>
                 </div>
-
-                <div class="col-sm-9 padding-right">
-                    <div class="features_items"><!--features_items-->
-                        <h2 class="title text-center">Features Items</h2>
-                        @foreach ($cart as $product)
-                            <div class="col-sm-4">
-                                <div class="product-image-wrapper">
-                                    <div class="single-products">
-                                        <div class="productinfo text-center">
-                                            <img src="{{asset('images/shop/product9.jpg')}}" alt="" />
-                                            <h2>${{$product->price}}</h2>
-                                            <p>{{$product->name}}</p>
-                                            <a href="{{url('cart')}}" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
-                                            <a href='{{url("products/details/$product->id")}}' class="btn btn-default add-to-cart"><i class="fa fa-info"></i>View Details</a>
-                                        </div>
-                                        <div class="product-overlay">
-                                            <div class="overlay-content">
-                                                <h2>${{$product->price}}</h2>
-                                                <p>${{$product->name}}</p>
-                                                <form method="POST" action="{{url('cart')}}">
-                                                    <input type="hidden" name="product_id" value="{{$product->id}}">
-                                                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                                    <button type="submit" class="btn btn-fefault add-to-cart">
-                                                        <i class="fa fa-shopping-cart"></i>
-                                                        Add to cart
-                                                    </button>
-                                                </form>
-                                                <a href='{{url("products/details/$product->id")}}' class="btn btn-default add-to-cart"><i class="fa fa-info"></i>View Details</a>
-                                            </div>
-                                        </div>
+                <div class="table-responsive cart_info">
+                    <table class="table table-condensed">
+                        <thead>
+                            <tr class="cart_menu">
+                                <td class="image">Item</td>
+                                <td class="description"></td>
+                                <td class="price">Price</td>
+                                <td class="quantity">Quantity</td>
+                                <td class="total">Total</td>
+                                <td></td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        @foreach($cart as $item)
+                            <tr>
+                                <td class="cart_product">
+                                    <a href=""><img src="{{ $item->thumbnail }}" alt=""></a>
+                                </td>
+                                <td class="cart_description">
+                                    <h4><a href="">{{ $item->name }}</a></h4>
+                                    <p>Web ID: {{ $item->id }}</p>
+                                </td>
+                                <td class="cart_price">
+                                    <p>{{ $item->price }}</p>
+                                </td>
+                                <td class="cart_quantity">
+                                    <div class="cart_quantity_button">
+                                        <a class="cart_quantity_up" href='{{url("cart?book_id=$item->id&increment=1")}}'> + </a>
+                                        <input class="cart_quantity_input" type="text" name="quantity" value="{{ $item->qty }}" autocomplete="off" size="2">
+                                        <a class="cart_quantity_down" href='{{url("cart?book_id=$item->id&decrease=1")}}'> - </a>
                                     </div>
-                                    <div class="choose">
-                                        <ul class="nav nav-pills nav-justified">
-                                            <li><a href=""><i class="fa fa-plus-square"></i>Add to wishlist</a></li>
-                                            <li><a href=""><i class="fa fa-plus-square"></i>Add to compare</a></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
+                                </td>
+                                <td class="cart_total">
+                                    <p class="cart_total_price">{{ $item->qty*$item->price }}</p>
+                                </td>
+                                <td class="cart_delete">
+                                    <a class="cart_quantity_delete" href=""><i class="fa fa-times"></i></a>
+                                </td>
+                            </tr>
                         @endforeach
-                        <ul class="pagination">
-                            <li class="active"><a href="">1</a></li>
-                            <li><a href="">2</a></li>
-                            <li><a href="">3</a></li>
-                            <li><a href="">»</a></li>
-                        </ul>
-                    </div><!--features_items-->
+
+                        </tbody>
+                    </table>
                 </div>
             </div>
-        </div>
-    </section>
+        </section> <!--/#cart_items-->
+
+        <section id="do_action">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="total_area">
+                            <ul>
+                                <li>Tiền hàng: <span>{{ \Gloudemans\Shoppingcart\Facades\Cart::subtotal() }}</span></li>
+                                <li>Eco Tax <span>{{ \Gloudemans\Shoppingcart\Facades\Cart::tax() }}</span></li>
+                                <li>Tổng tiền <span>{{ \Gloudemans\Shoppingcart\Facades\Cart::total() }}</span></li>
+                            </ul>
+                            <a class="btn btn-default update" href="{{url('cart')}}">Update</a>
+                            <a class="btn btn-default check_out" href="{{url('checkout')}}">Check Out</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section><!--/#do_action-->
 @endsection
