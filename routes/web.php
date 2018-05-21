@@ -12,7 +12,7 @@
 */
 
 
-Route::group(["prefix"=> "admincp","middleware" => "auth"],function (){
+Route::group(["prefix"=> "admincp","middleware" => ["auth","isAdmin"]],function (){
     Route::view('/', 'admincp.panel.blank');
     // Section CoreUI elements
     Route::view('/admincp/sample/dashboard','samples.dashboard');
@@ -44,7 +44,7 @@ Route::group(['prefix'=>"admincp"],function (){
 });
 
 
-Route::get('/','Front@index');
+Route::get('/abc','Front@index')->name("user.homepage");
 Route::get('/products','Front@products');
 Route::get('/products/details/{id}','Front@product_details')->name("front.book.detail.get");
 Route::get('/products/categories/{name}','Front@product_categories')->name("front.category.get");

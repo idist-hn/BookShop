@@ -41,7 +41,9 @@ class SendMail extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->view();
+            ->greeting('Hello!')
+            ->line('One of your invoices has been paid!')
+            ->line('Thank you for using our application!');
     }
 
     /**
