@@ -74,7 +74,7 @@
                 <div class="col-sm-8">
                     <div class="shop-menu pull-right">
                         <ul class="nav navbar-nav">
-                            <li><a href="#"><i class="fa fa-user"></i> Tài Khoản</a></li>
+                            <li><a href="#"><i class="fa fa-user"></i> @if(\Illuminate\Support\Facades\Auth::user()->id){{ \Illuminate\Support\Facades\Auth::user()->name }}@else Tài Khoản @endif</a></li>
                             <li><a href="{{url('checkout')}}"><i class="fa fa-crosshairs"></i> Thanh Toán</a></li>
                             <li><a href="{{url('cart')}}"><i class="fa fa-shopping-cart"></i> Giỏ Hàng</a></li>
                             <li><a href="{{url('login')}}"><i class="fa fa-lock"></i> Đăng Nhập</a></li>
@@ -288,6 +288,7 @@
 </footer><!--/Footer-->
 
 
+<script src="{{asset('js/jquery.js')}}"></script>
 <script src="{{asset('js/jquery.js')}}"></script>
 <script src="{{asset('js/bootstrap.min.js')}}"></script>
 <script src="{{asset('js/jquery.scrollUp.min.js')}}"></script>

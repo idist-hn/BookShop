@@ -8,7 +8,10 @@ use App\Book;
 use App\Category;
 use App\Product;
 use Gloudemans\Shoppingcart\Facades\Cart;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Request;
+use Mockery\Exception;
+
 class Front extends Controller
 {
 
@@ -108,7 +111,22 @@ class Front extends Controller
 
     public function postCheckout(Request $request){
         $user = Auth::user();
-        $user->notify(new SendMail());
+        try{
+            $user->notify(new SendMail());
+        }catch (\Exception $e){
+
+        }
+
+        try{
+            DB::table("bills")->insert([
+                'user_id' => $user->id,
+                'cart' => json_encode(Cart::content())
+            ]);
+            Cart::destroy();
+        }catch (\Exception $e){
+
+        }
+
         return redirect(route("user.homepage"));
     }
 
@@ -121,6 +139,7 @@ class Front extends Controller
         $keyword = Request::get('keyword');
         $books = Book::search($keyword)->paginate('15');
 //        dd($books);
+
         return view('search', array('page' => 'products', 'books' => $books));
 
     }
