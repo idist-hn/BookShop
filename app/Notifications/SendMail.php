@@ -2,6 +2,7 @@
 
 namespace App\Notifications;
 
+use Gloudemans\Shoppingcart\Facades\Cart;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -41,9 +42,7 @@ class SendMail extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-            ->greeting('Hello!')
-            ->line('One of your invoices has been paid!')
-            ->line('Thank you for using our application!');
+            ->view("email",['cart'=> Cart::content(), "page"=> "Confirm"]);
     }
 
     /**

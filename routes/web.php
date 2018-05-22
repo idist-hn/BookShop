@@ -44,7 +44,7 @@ Route::group(['prefix'=>"admincp"],function (){
 });
 
 
-Route::get('/abc','Front@index')->name("user.homepage");
+Route::get('/','Front@index')->name("user.homepage");
 Route::get('/products','Front@products');
 Route::get('/products/details/{id}','Front@product_details')->name("front.book.detail.get");
 Route::get('/products/categories/{name}','Front@product_categories')->name("front.category.get");

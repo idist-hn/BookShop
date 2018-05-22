@@ -23,7 +23,7 @@ class Front extends Controller
 
     public function products()
     {
-        $books = Book::all();
+        $books = Book::paginate(15);
         return view('products', array('page' => 'products', 'books'=> $books));
     }
 
@@ -109,6 +109,7 @@ class Front extends Controller
     public function postCheckout(Request $request){
         $user = Auth::user();
         $user->notify(new SendMail());
+        return redirect(route("user.homepage"));
     }
 
     public function search($query)
@@ -119,6 +120,8 @@ class Front extends Controller
     public function searchBook(){
         $keyword = Request::get('keyword');
         $books = Book::search($keyword)->paginate('15');
-        dd($books);
+//        dd($books);
+        return view('search', array('page' => 'products', 'books' => $books));
+
     }
 }
