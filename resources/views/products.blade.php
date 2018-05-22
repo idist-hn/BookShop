@@ -24,7 +24,7 @@
                         <div class="product-image-wrapper">
                             <div class="single-products">
                                 <div class="productinfo text-center">
-                                    <img src="{{ $book->thumbnail }}" alt="" />
+                                    <img src="{{ $book->thumbnail }}" alt="" style="height: 250px"/>
                                     <h2>{{ $book->price }}đ</h2>
                                     <p>{{ $book->name }}</p>
                                     <a href="{{url('cart')}}" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Thêm vào giỏ hàng</a>
