@@ -116,4 +116,9 @@ class Front extends Controller
         return view('products', array('page' => 'products'));
     }
 
+    public function searchBook(){
+        $keyword = Request::get('keyword');
+        $books = Book::search($keyword)->paginate('15');
+        dd($books);
+    }
 }

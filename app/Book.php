@@ -3,9 +3,11 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Laravel\Scout\Searchable;
 
 class Book extends Model
 {
+    use Searchable;
     //
     protected $table = "books";
 
@@ -20,4 +22,6 @@ class Book extends Model
     public function images(){
         return $this->hasMany("App\ImageBook");
     }
+
+//    public function sea
 }

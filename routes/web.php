@@ -66,6 +66,8 @@ Route::get('blade', function () {
     return view('page',array('name' => 'The Raven','day' => 'Friday','drinks' => $drinks));
 });
 
+Route::post('search','Front@searchBook')->name('search');
+
 
 
 

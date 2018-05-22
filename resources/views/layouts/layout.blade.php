@@ -111,9 +111,12 @@
                     </div>
                 </div>
                 <div class="col-sm-3">
-                    <div class="search_box pull-right">
-                        <input type="text" placeholder="Search"/>
-                    </div>
+                    <form method="post" action="{{ route('search') }}">
+                        {{csrf_field()}}
+                        <div class="search_box pull-right">
+                            <input type="text" name="keyword" placeholder="Search"/>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
